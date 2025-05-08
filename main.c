@@ -2,30 +2,26 @@
 #include "diagnosis.h"
 #include "advice.h"
 #include <string.h>
+#include "symptom.h"
 
 int main() {
-    char symptoms[10][50];
-    int count;
-
-    printf("Enter number of symptoms you are experiencing: ");
-    scanf("%d", &count);
-    getchar(); // to consume newline
-
-    for(int i = 0; i < count; i++) {
-        printf("Enter symptom %d: ", i+1);
-        fgets(symptoms[i], 50, stdin);
-        symptoms[i][strcspn(symptoms[i], "\n")] = 0; // remove newline
-    }
-
+    int selected[10], scores[10], count;
     char disease[50];
     char severity[20];
 
-    diagnose(symptoms, count, disease, severity);  // from diagnosis.c
+    // Step 1: Let user select symptoms from categories
+    select_symptoms(selected, scores, &count);
 
+    // Step 2: Predict disease and severity
+    diagnose(selected, scores, count, disease, severity);
+
+
+    // Step 3: Show result
     printf("\nPossible Disease: %s\n", disease);
     printf("Severity Level: %s\n", severity);
 
-    show_advice(disease);  // from advice.c
+    // Step 4: Show advice
+    show_advice(disease);
 
     return 0;
 }
